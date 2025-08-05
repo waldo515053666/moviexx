@@ -122,6 +122,8 @@
       transition: all 0.3s ease-in-out;
       display: flex;
       flex-direction: column;
+      cursor: pointer;
+      user-select: none;
     }
     li:hover {
       background: linear-gradient(to right, #00ccff, #0066ff);
@@ -142,6 +144,7 @@
       word-break: break-word;
       flex-grow: 1;
       min-width: 150px;
+      pointer-events: none; /* Disable direct click on anchor to force li click */
     }
     button.copy-btn {
       background: #0066ffcc;
@@ -154,6 +157,7 @@
       transition: background 0.3s;
       flex-shrink: 0;
       min-width: 70px;
+      pointer-events: auto; /* Enable button clicks */
     }
     button.copy-btn:hover {
       background: #00ccff;
@@ -294,54 +298,75 @@
 
     const list = document.getElementById("linksList");
 
-    links.forEach((link, i) => {
-      const li = document.createElement("li");
+    function createListItems() {
+      list.innerHTML = "";
+      // Sort links by saved rank descending
+      links.sort((a, b) => {
+        const aRank = parseInt(localStorage.getItem("rank-" + a.name)) || 0;
+        const bRank = parseInt(localStorage.getItem("rank-" + b.name)) || 0;
+        return bRank - aRank;
+      });
+      links.forEach((link) => {
+        const li = document.createElement("li");
 
-      const row = document.createElement("div");
-      row.className = "link-content";
+        // Clicking anywhere on li except copy-btn opens link
+        li.addEventListener("click", (e) => {
+          if (!e.target.classList.contains("copy-btn") && !e.target.classList.contains("star")) {
+            window.open(link.url, "_blank");
+          }
+        });
 
-      const a = document.createElement("a");
-      a.href = link.url;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = link.name;
+        const row = document.createElement("div");
+        row.className = "link-content";
 
-      const btn = document.createElement("button");
-      btn.className = "copy-btn";
-      btn.textContent = "Copy";
-      btn.dataset.url = link.url;
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = link.name;
 
-      row.appendChild(a);
-      row.appendChild(btn);
+        const btn = document.createElement("button");
+        btn.className = "copy-btn";
+        btn.textContent = "Copy";
+        btn.dataset.url = link.url;
 
-      const stars = document.createElement("div");
-      stars.className = "stars";
-      for (let s = 1; s <= 5; s++) {
-        const star = document.createElement("span");
-        star.className = "star";
-        star.innerHTML = "★";
-        star.dataset.index = i;
-        star.dataset.star = s;
-        star.onclick = () => {
-          localStorage.setItem("rank-" + i, s);
-          renderStars();
-        };
-        stars.appendChild(star);
-      }
+        row.appendChild(a);
+        row.appendChild(btn);
 
-      li.appendChild(row);
-      li.appendChild(stars);
-      list.appendChild(li);
-    });
+        const stars = document.createElement("div");
+        stars.className = "stars";
+
+        for (let s = 1; s <= 5; s++) {
+          const star = document.createElement("span");
+          star.className = "star";
+          star.innerHTML = "★";
+          star.dataset.name = link.name;
+          star.dataset.star = s;
+          star.onclick = (ev) => {
+            ev.stopPropagation();
+            localStorage.setItem("rank-" + link.name, s);
+            createListItems();
+          };
+          stars.appendChild(star);
+        }
+
+        li.appendChild(row);
+        li.appendChild(stars);
+        list.appendChild(li);
+      });
+
+      renderStars();
+    }
 
     function renderStars() {
       document.querySelectorAll(".star").forEach(star => {
-        const index = star.dataset.index;
-        const value = parseInt(localStorage.getItem("rank-" + index) || "0");
+        const name = star.dataset.name;
+        const value = parseInt(localStorage.getItem("rank-" + name) || "0");
         star.classList.toggle("selected", parseInt(star.dataset.star) <= value);
       });
     }
-    renderStars();
+
+    createListItems();
 
     // Visitor Counter
     fetch("https://api.countapi.xyz/get/moviepirate-final/visits")
