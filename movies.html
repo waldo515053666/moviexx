@@ -7,9 +7,7 @@
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2784/2784459.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Orbitron', sans-serif;
@@ -24,7 +22,6 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-    /* Animated starry background */
     body::before {
       content: "";
       position: fixed;
@@ -42,8 +39,8 @@
       z-index: 0;
     }
     @keyframes starMove {
-      0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: 10000px 5000px, 7000px 3000px, 4000px 2000px, 12000px 7000px, 9000px 1000px; }
+      0% { background-position: 0 0; }
+      100% { background-position: 10000px 5000px; }
     }
     header {
       background: linear-gradient(90deg, #00ffcc, #0066ff);
@@ -87,12 +84,16 @@
       border-radius: 6px;
       transition: all 0.3s ease-in-out;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
     }
     li:hover {
       background: linear-gradient(to right, #00ccff, #0066ff);
       transform: scale(1.02);
+    }
+    .link-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     a {
       color: #ffffff;
@@ -101,9 +102,6 @@
       font-size: 1.1em;
       word-break: break-word;
       flex-grow: 1;
-    }
-    a:hover {
-      text-decoration: none;
     }
     button.copy-btn {
       background: #0066ffcc;
@@ -120,19 +118,26 @@
     button.copy-btn:hover {
       background: #00ccff;
     }
+    .stars {
+      margin-top: 8px;
+    }
+    .star {
+      font-size: 20px;
+      cursor: pointer;
+      color: #888;
+    }
+    .star.selected {
+      color: gold;
+    }
     .counter {
       margin-top: 40px;
       font-size: 20px;
       color: #00ffcc;
-      position: relative;
-      z-index: 1;
     }
     .last-updated {
       margin-top: 10px;
       font-size: 14px;
       color: #999;
-      position: relative;
-      z-index: 1;
     }
     .loader {
       width: 30px;
@@ -144,14 +149,9 @@
       margin: 20px auto;
     }
     @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    /* Back to top button */
     #backToTopBtn {
       display: none;
       position: fixed;
@@ -167,39 +167,10 @@
       transition: background 0.3s;
       font-size: 20px;
       color: #000;
-      user-select: none;
     }
     #backToTopBtn:hover {
       background: #0066ff;
       color: #fff;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8em;
-      }
-      a {
-        font-size: 1em;
-      }
-      li {
-        padding: 10px 14px;
-      }
-      button.copy-btn {
-        padding: 4px 8px;
-        font-size: 0.9em;
-        margin-left: 8px;
-      }
-      #backToTopBtn {
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 14px;
-        font-size: 18px;
-      }
-    }
-    @media (min-width: 1200px) {
-      body {
-        padding: 60px 80px;
-      }
     }
   </style>
 </head>
@@ -209,185 +180,130 @@
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">Switch Light Mode</button>
   </header>
 
-  <ul id="linksList">
-    <li>
-      <a href="https://xprime.tv/" target="_blank" rel="noopener noreferrer">Xprime 1</a>
-      <button class="copy-btn" data-url="https://xprime.tv/">Copy</button>
-    </li>
-    <li>
-      <a href="https://ww25.soap2day.day/soap2day-fk9js/" target="_blank" rel="noopener noreferrer">Soap2day</a>
-      <button class="copy-btn" data-url="https://ww25.soap2day.day/soap2day-fk9js/">Copy</button>
-    </li>
-    <li>
-      <a href="https://hdtodayz.to/home" target="_blank" rel="noopener noreferrer">Hdtodayz</a>
-      <button class="copy-btn" data-url="https://hdtodayz.to/home">Copy</button>
-    </li>
-    <li>
-      <a href="https://myflixerz.to/home" target="_blank" rel="noopener noreferrer">Myflixerz</a>
-      <button class="copy-btn" data-url="https://myflixerz.to/home">Copy</button>
-    </li>
-    <li>
-      <a href="http://tv1.egydead.live/home/" target="_blank" rel="noopener noreferrer">Egydead</a>
-      <button class="copy-btn" data-url="http://tv1.egydead.live/home/">Copy</button>
-    </li>
-    <li>
-      <a href="https://www.fmovies.gd/home" target="_blank" rel="noopener noreferrer">Fmovies</a>
-      <button class="copy-btn" data-url="https://www.fmovies.gd/home">Copy</button>
-    </li>
-    <li>
-      <a href="https://veloratv.ru/" target="_blank" rel="noopener noreferrer">Veloratv</a>
-      <button class="copy-btn" data-url="https://veloratv.ru/">Copy</button>
-    </li>
-    <li>
-      <a href="https://345movie.net/home" target="_blank" rel="noopener noreferrer">345movie</a>
-      <button class="copy-btn" data-url="https://345movie.net/home">Copy</button>
-    </li>
-    <li>
-      <a href="https://watch.spencerdevs.xyz/" target="_blank" rel="noopener noreferrer">sCencerdevs</a>
-      <button class="copy-btn" data-url="https://watch.spencerdevs.xyz/">Copy</button>
-    </li>
-    <li>
-      <a href="https://www.cineby.app/" target="_blank" rel="noopener noreferrer">Cineby</a>
-      <button class="copy-btn" data-url="https://www.cineby.app/">Copy</button>
-    </li>
-    <li>
-      <a href="https://rivestream.org/" target="_blank" rel="noopener noreferrer">Rivestream</a>
-      <button class="copy-btn" data-url="https://rivestream.org/">Copy</button>
-    </li>
-    <li>
-      <a href="https://watch.corsflix.net/" target="_blank" rel="noopener noreferrer">Corsflix</a>
-      <button class="copy-btn" data-url="https://watch.corsflix.net/">Copy</button>
-    </li>
-    <li>
-      <a href="https://flickystream.net/" target="_blank" rel="noopener noreferrer">Flickystream</a>
-      <button class="copy-btn" data-url="https://flickystream.net/">Copy</button>
-    </li>
-    <li>
-      <a href="https://www.rgshows.me/" target="_blank" rel="noopener noreferrer">Rgshows</a>
-      <button class="copy-btn" data-url="https://www.rgshows.me/">Copy</button>
-    </li>
-    <li>
-      <a href="https://netplayz.live/" target="_blank" rel="noopener noreferrer">Netplayz</a>
-      <button class="copy-btn" data-url="https://netplayz.live/">Copy</button>
-    </li>
-    <li>
-      <a href="https://popcornmovies.org/home" target="_blank" rel="noopener noreferrer">Popcornmovies</a>
-      <button class="copy-btn" data-url="https://popcornmovies.org/home">Copy</button>
-    </li>
-    <li>
-      <a href="https://vidjoy.pro/" target="_blank" rel="noopener noreferrer">Vidjoy</a>
-      <button class="copy-btn" data-url="https://vidjoy.pro/">Copy</button>
-    </li>
-    <li>
-      <a href="https://smashystream.xyz/" target="_blank" rel="noopener noreferrer">Smashystream</a>
-      <button class="copy-btn" data-url="https://smashystream.xyz/">Copy</button>
-    </li>
-    <li>
-      <a href="https://streamm4u.com.co/home" target="_blank" rel="noopener noreferrer">Streamm4u</a>
-      <button class="copy-btn" data-url="https://streamm4u.com.co/home">Copy</button>
-    </li>
-    <li>
-      <a href="https://cinego.co/home/" target="_blank" rel="noopener noreferrer">Cinego</a>
-      <button class="copy-btn" data-url="https://cinego.co/home/">Copy</button>
-    </li>
-    <li>
-      <a href="https://bflix.sh/home/" target="_blank" rel="noopener noreferrer">Bflix</a>
-      <button class="copy-btn" data-url="https://bflix.sh/home/">Copy</button>
-    </li>
-    <li>
-      <a href="https://www.m-zone.org/" target="_blank" rel="noopener noreferrer">M-zone</a>
-      <button class="copy-btn" data-url="https://www.m-zone.org/">Copy</button>
-    </li>
-  </ul>
+  <ul id="linksList"></ul>
 
-  <div class="counter">
-    Visitor Count: <span id="counter"><div class="loader"></div></span>
-  </div>
+  <div class="counter">Visitor Count: <span id="counter"><div class="loader"></div></span></div>
   <div class="last-updated" id="lastUpdated"></div>
 
   <button id="backToTopBtn" title="Back to top">↑</button>
 
   <script>
-    const namespace = "moviepirate-final";
-    const key = "visits";
+    const links = [
+      { name: "Xprime 1", url: "https://xprime.tv/" },
+      { name: "Soap2day", url: "https://ww25.soap2day.day/soap2day-fk9js/" },
+      { name: "Hdtodayz", url: "https://hdtodayz.to/home" },
+      { name: "Myflixerz", url: "https://myflixerz.to/home" },
+      { name: "Egydead", url: "http://tv1.egydead.live/home/" },
+      { name: "Fmovies", url: "https://www.fmovies.gd/home" },
+      { name: "Veloratv", url: "https://veloratv.ru/" },
+      { name: "345movie", url: "https://345movie.net/home" },
+      { name: "sCencerdevs", url: "https://watch.spencerdevs.xyz/" },
+      { name: "Cineby", url: "https://www.cineby.app/" },
+      { name: "Rivestream", url: "https://rivestream.org/" },
+      { name: "Corsflix", url: "https://watch.corsflix.net/" },
+      { name: "Flickystream", url: "https://flickystream.net/" },
+      { name: "Rgshows", url: "https://www.rgshows.me/" },
+      { name: "Netplayz", url: "https://netplayz.live/" },
+      { name: "Popcornmovies", url: "https://popcornmovies.org/home" },
+      { name: "Vidjoy", url: "https://vidjoy.pro/" },
+      { name: "Smashystream", url: "https://smashystream.xyz/" },
+      { name: "Streamm4u", url: "https://streamm4u.com.co/home" },
+      { name: "Cinego", url: "https://cinego.co/home/" },
+      { name: "Bflix", url: "https://bflix.sh/home/" },
+      { name: "M-zone", url: "https://www.m-zone.org/" }
+    ];
 
-    // Visitor counter
-    fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
-      .then(res => {
-        if (res.status === 404) {
-          return fetch(`https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=0`);
-        }
-        return res;
-      })
-      .then(() => {
-        return fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
-      })
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById("counter").innerText = data.value;
-      })
-      .catch(() => {
-        document.getElementById("counter").innerText = "Error loading";
-      });
+    const list = document.getElementById("linksList");
 
-    // Theme toggle with persistence
-    const themeBtn = document.getElementById("themeBtn");
-    function applyTheme(isDark) {
-      if (isDark) {
-        document.body.style.background = "linear-gradient(to bottom, #0f0f0f, #1a1a1a)";
-        document.body.style.color = "#fff";
-        themeBtn.textContent = "Switch Light Mode";
-        localStorage.setItem("darkMode", "true");
-      } else {
-        document.body.style.background = "white";
-        document.body.style.color = "#000";
-        themeBtn.textContent = "Switch Dark Mode";
-        localStorage.setItem("darkMode", "false");
+    links.forEach((link, i) => {
+      const li = document.createElement("li");
+
+      const row = document.createElement("div");
+      row.className = "link-content";
+
+      const a = document.createElement("a");
+      a.href = link.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = link.name;
+
+      const btn = document.createElement("button");
+      btn.className = "copy-btn";
+      btn.textContent = "Copy";
+      btn.dataset.url = link.url;
+
+      row.appendChild(a);
+      row.appendChild(btn);
+
+      const stars = document.createElement("div");
+      stars.className = "stars";
+      for (let s = 1; s <= 5; s++) {
+        const star = document.createElement("span");
+        star.className = "star";
+        star.innerHTML = "★";
+        star.dataset.index = i;
+        star.dataset.star = s;
+        star.onclick = () => {
+          localStorage.setItem("rank-" + i, s);
+          renderStars();
+        };
+        stars.appendChild(star);
       }
-    }
-    function toggleTheme() {
-      const isDark = document.body.style.background.includes("#0f0f0f");
-      applyTheme(!isDark);
-    }
-    // On load apply saved theme
-    const savedTheme = localStorage.getItem("darkMode");
-    if (savedTheme === "false") {
-      applyTheme(false);
-    } else {
-      applyTheme(true);
-    }
 
-    // Copy link buttons
-    const copyButtons = document.querySelectorAll("button.copy-btn");
-    copyButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const url = btn.getAttribute("data-url");
-        navigator.clipboard.writeText(url).then(() => {
-          btn.textContent = "Copied!";
-          setTimeout(() => (btn.textContent = "Copy"), 1500);
-        }).catch(() => {
-          btn.textContent = "Failed";
-          setTimeout(() => (btn.textContent = "Copy"), 1500);
-        });
-      });
+      li.appendChild(row);
+      li.appendChild(stars);
+      list.appendChild(li);
     });
 
-    // Back to top button
+    function renderStars() {
+      document.querySelectorAll(".star").forEach(star => {
+        const index = star.dataset.index;
+        const value = parseInt(localStorage.getItem("rank-" + index) || "0");
+        star.classList.toggle("selected", parseInt(star.dataset.star) <= value);
+      });
+    }
+    renderStars();
+
+    // Visitor Counter
+    fetch("https://api.countapi.xyz/get/moviepirate-final/visits")
+      .then(res => res.status === 404
+        ? fetch("https://api.countapi.xyz/create?namespace=moviepirate-final&key=visits&value=0")
+        : res)
+      .then(() => fetch("https://api.countapi.xyz/hit/moviepirate-final/visits"))
+      .then(res => res.json())
+      .then(data => document.getElementById("counter").innerText = data.value)
+      .catch(() => document.getElementById("counter").innerText = "Error");
+
+    // Back to Top
     const backToTopBtn = document.getElementById("backToTopBtn");
     window.onscroll = () => {
-      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-        backToTopBtn.style.display = "block";
-      } else {
-        backToTopBtn.style.display = "none";
-      }
+      backToTopBtn.style.display = (window.scrollY > 300) ? "block" : "none";
     };
-    backToTopBtn.addEventListener("click", () => {
+    backToTopBtn.onclick = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    // Copy buttons
+    document.addEventListener("click", e => {
+      if (e.target.classList.contains("copy-btn")) {
+        const url = e.target.dataset.url;
+        navigator.clipboard.writeText(url).then(() => {
+          e.target.textContent = "Copied!";
+          setTimeout(() => e.target.textContent = "Copy", 1500);
+        });
+      }
     });
 
-    // Last updated date
-    const updated = new Date().toLocaleDateString();
-    document.getElementById("lastUpdated").innerText = `Last Updated: ${updated}`;
+    // Theme
+    const themeBtn = document.getElementById("themeBtn");
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle("light");
+      themeBtn.textContent = isLight ? "Switch Dark Mode" : "Switch Light Mode";
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+    }
+    if (localStorage.getItem("theme") === "light") toggleTheme();
+
+    document.getElementById("lastUpdated").innerText = "Last Updated: " + new Date().toLocaleDateString();
   </script>
 </body>
 </html>
