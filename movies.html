@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The MOVIE PIRATE</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2784/2784459.png" type="image/png" />
+  <!-- Pirate skull favicon -->
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2438/2438081.png" type="image/png" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; }
@@ -309,7 +310,7 @@
       links.forEach((link) => {
         const li = document.createElement("li");
 
-        // Clicking anywhere on li except copy-btn opens link
+        // Clicking anywhere on li except copy-btn and star opens link
         li.addEventListener("click", (e) => {
           if (!e.target.classList.contains("copy-btn") && !e.target.classList.contains("star")) {
             window.open(link.url, "_blank");
