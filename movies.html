@@ -4,14 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The MOVIE PIRATE</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4052/4052984.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0d0d0d;
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(to bottom, #0f0f0f, #1a1a1a);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -24,11 +24,23 @@
       text-align: center;
       padding: 20px 0;
       box-shadow: 0 0 10px #00ccff;
+      position: relative;
     }
     header h1 {
       margin: 0;
       font-size: 2.5em;
       color: #000;
+    }
+    .theme-toggle {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      background: #000000aa;
+      color: #00ffcc;
+      border: 1px solid #00ffcc;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
     }
     ul {
       list-style: none;
@@ -42,10 +54,11 @@
       border-left: 4px solid #00ccff;
       padding: 12px 16px;
       border-radius: 6px;
-      transition: background 0.2s;
+      transition: all 0.2s ease-in-out;
     }
     li:hover {
       background-color: #333;
+      transform: scale(1.02);
     }
     a {
       color: #00ccff;
@@ -62,27 +75,38 @@
       font-size: 20px;
       color: #00ffcc;
     }
+    .last-updated {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #999;
+    }
+    .loader {
+      width: 30px;
+      height: 30px;
+      border: 3px solid #00ccff;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8em;
-      }
-      a {
-        font-size: 1em;
-      }
-      li {
-        padding: 10px 14px;
-      }
+      header h1 { font-size: 1.8em; }
+      a { font-size: 1em; }
+      li { padding: 10px 14px; }
     }
     @media (min-width: 1200px) {
-      body {
-        padding: 60px 80px;
-      }
+      body { padding: 60px 80px; }
     }
   </style>
 </head>
 <body>
   <header>
     <h1>MOVIE PIRATE</h1>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">Switch Light Mode</button>
   </header>
 
   <ul>
@@ -111,8 +135,9 @@
   </ul>
 
   <div class="counter">
-    Visitor Count: <span id="counter">Loading...</span>
+    Visitor Count: <span id="counter"><div class="loader"></div></span>
   </div>
+  <div class="last-updated" id="lastUpdated"></div>
 
   <script>
     const namespace = "moviepirate-final";
@@ -135,6 +160,23 @@
       .catch(err => {
         document.getElementById("counter").innerText = "Error loading";
       });
+
+    function toggleTheme() {
+      const body = document.body;
+      const btn = document.getElementById("themeBtn");
+      if (body.style.backgroundColor === "white") {
+        body.style.background = "linear-gradient(to bottom, #0f0f0f, #1a1a1a)";
+        body.style.color = "#fff";
+        btn.textContent = "Switch Light Mode";
+      } else {
+        body.style.background = "white";
+        body.style.color = "#000";
+        btn.textContent = "Switch Dark Mode";
+      }
+    }
+
+    const updated = new Date().toLocaleDateString();
+    document.getElementById("lastUpdated").innerText = `Last Updated: ${updated}`;
   </script>
 </body>
 </html>
