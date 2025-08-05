@@ -67,13 +67,26 @@
   </div>
 
   <script>
-    fetch('https://api.countapi.xyz/update/moviepirate-test123/visits/?amount=1')
+    const namespace = "moviepirate-final"; // custom namespace
+    const key = "visits";
+
+    // Create the counter if it doesn't exist (only first time)
+    fetch(`https://api.countapi.xyz/get/${namespace}/${key}`)
+      .then(res => {
+        if (res.status === 404) {
+          return fetch(`https://api.countapi.xyz/create?namespace=${namespace}&key=${key}&value=0`);
+        }
+        return res;
+      })
+      .then(() => {
+        return fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`);
+      })
       .then(res => res.json())
       .then(data => {
-        document.getElementById('counter').innerText = data.value;
+        document.getElementById("counter").innerText = data.value;
       })
-      .catch(() => {
-        document.getElementById('counter').innerText = "Error loading";
+      .catch(err => {
+        document.getElementById("counter").innerText = "Error loading";
       });
   </script>
 </body>
