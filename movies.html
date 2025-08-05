@@ -67,10 +67,13 @@
   </div>
 
   <script>
-    fetch('https://api.countapi.xyz/update/moviepirate123.com/visits/?amount=1')
+    fetch('https://api.countapi.xyz/update/moviepirate-test123/visits/?amount=1')
       .then(res => res.json())
       .then(data => {
         document.getElementById('counter').innerText = data.value;
+      })
+      .catch(() => {
+        document.getElementById('counter').innerText = "Error loading";
       });
   </script>
 </body>
