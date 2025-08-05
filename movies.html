@@ -28,10 +28,15 @@
     a:hover {
       text-decoration: underline;
     }
+    .counter {
+      margin-top: 40px;
+      font-size: 18px;
+      color: #00ffcc;
+    }
   </style>
 </head>
 <body>
-  <h1>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MOVIE PIRATE</h1>
+  <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOVIE PIRATE</h1>
   <ul>
     <li><a href="https://xprime.tv/" target="_blank">Xprime 1</a></li>
     <li><a href="https://ww25.soap2day.day/soap2day-fk9js/" target="_blank">Soap2day</a></li>
@@ -56,6 +61,17 @@
     <li><a href="https://bflix.sh/home/" target="_blank">Bflix</a></li>
     <li><a href="https://www.m-zone.org/" target="_blank">M-zone</a></li>
   </ul>
+
+  <div class="counter">
+    Visitor Count: <span id="counter">Loading...</span>
+  </div>
+
+  <script>
+    fetch('https://api.countapi.xyz/update/moviepirate123.com/visits/?amount=1')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('counter').innerText = data.value;
+      });
+  </script>
 </body>
 </html>
-
