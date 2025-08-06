@@ -22,6 +22,7 @@
       position: relative;
       min-height: 100vh;
       overflow-x: hidden;
+      text-align: center;
     }
     body.light {
       background: white;
@@ -54,58 +55,6 @@
       color: #000;
     }
 
-    body.hacker-green {
-      background: #001a00;
-      color: #00ff00;
-    }
-    body.hacker-green a {
-      color: #00ff00;
-    }
-    body.hacker-green li {
-      background-color: #003300;
-      border-left-color: #00ff00;
-    }
-    body.hacker-green li:hover {
-      background: linear-gradient(to right, #00ff00, #007700);
-      color: #001a00;
-      transform: scale(1.02);
-    }
-    body.hacker-green #backToTopBtn {
-      background: #00ff00;
-      color: #001a00;
-      box-shadow: 0 0 8px #00ff0088;
-    }
-    body.hacker-green #backToTopBtn:hover {
-      background: #00cc00;
-      color: #000;
-    }
-
-    body.neon-purple {
-      background: #1a001a;
-      color: #d000ff;
-    }
-    body.neon-purple a {
-      color: #d000ff;
-    }
-    body.neon-purple li {
-      background-color: #330033;
-      border-left-color: #d000ff;
-    }
-    body.neon-purple li:hover {
-      background: linear-gradient(to right, #d000ff, #700070);
-      color: #1a001a;
-      transform: scale(1.02);
-    }
-    body.neon-purple #backToTopBtn {
-      background: #d000ff;
-      color: #1a001a;
-      box-shadow: 0 0 8px #d000ff88;
-    }
-    body.neon-purple #backToTopBtn:hover {
-      background: #b000d0;
-      color: #000;
-    }
-
     body::before {
       content: "";
       position: fixed;
@@ -135,12 +84,21 @@
       position: relative;
       z-index: 1;
     }
-    header h1 {
+    #animatedHeader {
+      font-size: 3em;
+      background: linear-gradient(90deg, #00ffcc, #0066ff, #00ffcc);
+      background-size: 200% 100%;
+      animation: slideGradient 3s linear infinite;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       margin: 0;
-      font-size: 2.5em;
-      color: #000;
+      user-select: none;
     }
-    #themeSelector {
+    @keyframes slideGradient {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .theme-toggle {
       position: absolute;
       top: 10px;
       right: 20px;
@@ -151,10 +109,9 @@
       border-radius: 4px;
       cursor: pointer;
       z-index: 2;
-      font-weight: bold;
       transition: background 0.3s, color 0.3s;
     }
-    #themeSelector:hover {
+    .theme-toggle:hover {
       background: #00ccff;
       color: #000;
       border-color: #0066ff;
@@ -198,7 +155,7 @@
       word-break: break-word;
       flex-grow: 1;
       min-width: 150px;
-      pointer-events: none; /* Disable direct click on anchor to force li click */
+      pointer-events: none;
     }
     button.copy-btn {
       background: #0066ffcc;
@@ -211,7 +168,7 @@
       transition: background 0.3s;
       flex-shrink: 0;
       min-width: 70px;
-      pointer-events: auto; /* Enable button clicks */
+      pointer-events: auto;
     }
     button.copy-btn:hover {
       background: #00ccff;
@@ -235,12 +192,13 @@
       margin-top: 40px;
       font-size: 20px;
       color: #00ffcc;
-      min-height: 30px;
+      user-select: none;
     }
-    .last-visited {
+    .last-updated {
       margin-top: 10px;
       font-size: 14px;
       color: #999;
+      user-select: none;
     }
     .loader {
       width: 30px;
@@ -249,7 +207,7 @@
       border-top: 3px solid transparent;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto;
+      margin: 20px auto;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -276,7 +234,6 @@
       background: #0066ff;
       color: #fff;
     }
-
     @media (max-width: 600px) {
       header h1 {
         font-size: 1.8em;
@@ -310,12 +267,46 @@
         padding: 60px 80px;
       }
     }
+    /* Themes */
+    body.light {
+      background: white;
+      color: black;
+    }
+    body.hacker-green {
+      background: #0f0f0f;
+      color: #00ff00;
+    }
+    body.neon-purple {
+      background: #1a001a;
+      color: #cc00ff;
+    }
+    body.hacker-green li {
+      background-color: #002200;
+      border-left-color: #00ff00;
+    }
+    body.neon-purple li {
+      background-color: #330033;
+      border-left-color: #cc00ff;
+    }
+    body.hacker-green li:hover {
+      background: linear-gradient(to right, #00ff00, #007700);
+      color: #000;
+    }
+    body.neon-purple li:hover {
+      background: linear-gradient(to right, #cc00ff, #660066);
+      color: #fff;
+    }
+    body.hacker-green .theme-toggle,
+    body.neon-purple .theme-toggle {
+      background: transparent;
+      border-color: currentColor;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>🏴‍☠️ MOVIE PIRATE</h1>
-    <select id="themeSelector" title="Select Theme">
+    <h1 id="animatedHeader">🏴‍☠️ MOVIE PIRATE</h1>
+    <select class="theme-toggle" id="themeSelector" title="Choose Theme">
       <option value="dark">Dark</option>
       <option value="light">Light</option>
       <option value="hacker-green">Hacker Green</option>
@@ -326,7 +317,7 @@
   <ul id="linksList"></ul>
 
   <div class="counter">Visitor Count: <span id="counter"><div class="loader"></div></span></div>
-  <div class="last-visited" id="lastVisited"></div>
+  <div class="last-updated" id="lastUpdated"></div>
 
   <button id="backToTopBtn" title="Back to top">↑</button>
 
@@ -360,7 +351,6 @@
 
     function createListItems() {
       list.innerHTML = "";
-      // Sort links by saved rank descending
       links.sort((a, b) => {
         const aRank = parseInt(localStorage.getItem("rank-" + a.name)) || 0;
         const bRank = parseInt(localStorage.getItem("rank-" + b.name)) || 0;
@@ -368,7 +358,6 @@
       });
       links.forEach((link) => {
         const li = document.createElement("li");
-
         li.addEventListener("click", (e) => {
           if (!e.target.classList.contains("copy-btn") && !e.target.classList.contains("star")) {
             window.open(link.url, "_blank");
@@ -427,21 +416,15 @@
 
     createListItems();
 
-    // Visitor Counter with animation & reliable hit
+    // Visitor Counter with animation
     const counterEl = document.getElementById("counter");
 
-    // Animate number from start to end
-    function animateCount(start, end, duration = 1000) {
-      if (start === end) {
-        counterEl.textContent = end;
-        return;
-      }
+    function animateCount(start, end, duration) {
       let startTimestamp = null;
       const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const current = Math.floor(progress * (end - start) + start);
-        counterEl.textContent = current;
+        counterEl.textContent = Math.floor(progress * (end - start) + start);
         if (progress < 1) {
           window.requestAnimationFrame(step);
         }
@@ -449,32 +432,18 @@
       window.requestAnimationFrame(step);
     }
 
-    // Load previous count from localStorage or 0 for animation start
-    const previousCount = parseInt(localStorage.getItem("visitorCount")) || 0;
-
-    // Hit countapi and animate
+    // Use CountAPI hit endpoint
     fetch("https://api.countapi.xyz/hit/moviepirate-final/visits")
       .then(res => res.json())
       .then(data => {
-        const newCount = data.value || 0;
-        animateCount(previousCount, newCount, 1200);
+        const prevCount = parseInt(localStorage.getItem("visitorCount")) || 0;
+        const newCount = data.value;
         localStorage.setItem("visitorCount", newCount);
+        animateCount(prevCount, newCount, 1000);
       })
       .catch(() => {
         counterEl.textContent = "Error";
       });
-
-    // Last visited display
-    const lastVisitedEl = document.getElementById("lastVisited");
-    const lastVisit = localStorage.getItem("lastVisit");
-    if (lastVisit) {
-      const d = new Date(lastVisit);
-      lastVisitedEl.textContent = "Your Last Visit: " + d.toLocaleString();
-    } else {
-      lastVisitedEl.textContent = "Welcome! This is your first visit.";
-    }
-    // Save current visit time
-    localStorage.setItem("lastVisit", new Date().toISOString());
 
     // Back to Top
     const backToTopBtn = document.getElementById("backToTopBtn");
@@ -518,6 +487,8 @@
     // On load apply saved theme or default dark
     const savedTheme = localStorage.getItem("theme") || "dark";
     applyTheme(savedTheme);
+
+    document.getElementById("lastUpdated").innerText = "Last Updated: " + new Date().toLocaleDateString();
   </script>
 </body>
 </html>
