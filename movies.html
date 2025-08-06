@@ -54,6 +54,58 @@
       color: #000;
     }
 
+    body.hacker-green {
+      background: #001a00;
+      color: #00ff00;
+    }
+    body.hacker-green a {
+      color: #00ff00;
+    }
+    body.hacker-green li {
+      background-color: #003300;
+      border-left-color: #00ff00;
+    }
+    body.hacker-green li:hover {
+      background: linear-gradient(to right, #00ff00, #007700);
+      color: #001a00;
+      transform: scale(1.02);
+    }
+    body.hacker-green #backToTopBtn {
+      background: #00ff00;
+      color: #001a00;
+      box-shadow: 0 0 8px #00ff0088;
+    }
+    body.hacker-green #backToTopBtn:hover {
+      background: #00cc00;
+      color: #000;
+    }
+
+    body.neon-purple {
+      background: #1a001a;
+      color: #d000ff;
+    }
+    body.neon-purple a {
+      color: #d000ff;
+    }
+    body.neon-purple li {
+      background-color: #330033;
+      border-left-color: #d000ff;
+    }
+    body.neon-purple li:hover {
+      background: linear-gradient(to right, #d000ff, #700070);
+      color: #1a001a;
+      transform: scale(1.02);
+    }
+    body.neon-purple #backToTopBtn {
+      background: #d000ff;
+      color: #1a001a;
+      box-shadow: 0 0 8px #d000ff88;
+    }
+    body.neon-purple #backToTopBtn:hover {
+      background: #b000d0;
+      color: #000;
+    }
+
     body::before {
       content: "";
       position: fixed;
@@ -88,7 +140,7 @@
       font-size: 2.5em;
       color: #000;
     }
-    .theme-toggle {
+    #themeSelector {
       position: absolute;
       top: 10px;
       right: 20px;
@@ -99,9 +151,10 @@
       border-radius: 4px;
       cursor: pointer;
       z-index: 2;
+      font-weight: bold;
       transition: background 0.3s, color 0.3s;
     }
-    .theme-toggle:hover {
+    #themeSelector:hover {
       background: #00ccff;
       color: #000;
       border-color: #0066ff;
@@ -182,8 +235,9 @@
       margin-top: 40px;
       font-size: 20px;
       color: #00ffcc;
+      min-height: 30px;
     }
-    .last-updated {
+    .last-visited {
       margin-top: 10px;
       font-size: 14px;
       color: #999;
@@ -195,7 +249,7 @@
       border-top: 3px solid transparent;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 20px auto;
+      margin: 0 auto;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -261,13 +315,18 @@
 <body>
   <header>
     <h1>🏴‍☠️ MOVIE PIRATE</h1>
-    <button class="theme-toggle" id="themeBtn">Switch Light Mode</button>
+    <select id="themeSelector" title="Select Theme">
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
+      <option value="hacker-green">Hacker Green</option>
+      <option value="neon-purple">Neon Purple</option>
+    </select>
   </header>
 
   <ul id="linksList"></ul>
 
   <div class="counter">Visitor Count: <span id="counter"><div class="loader"></div></span></div>
-  <div class="last-updated" id="lastUpdated"></div>
+  <div class="last-visited" id="lastVisited"></div>
 
   <button id="backToTopBtn" title="Back to top">↑</button>
 
@@ -310,7 +369,6 @@
       links.forEach((link) => {
         const li = document.createElement("li");
 
-        // Clicking anywhere on li except copy-btn and star opens link
         li.addEventListener("click", (e) => {
           if (!e.target.classList.contains("copy-btn") && !e.target.classList.contains("star")) {
             window.open(link.url, "_blank");
@@ -369,15 +427,54 @@
 
     createListItems();
 
-    // Visitor Counter
-    fetch("https://api.countapi.xyz/get/moviepirate-final/visits")
-      .then(res => res.status === 404
-        ? fetch("https://api.countapi.xyz/create?namespace=moviepirate-final&key=visits&value=0")
-        : res)
-      .then(() => fetch("https://api.countapi.xyz/hit/moviepirate-final/visits"))
+    // Visitor Counter with animation & reliable hit
+    const counterEl = document.getElementById("counter");
+
+    // Animate number from start to end
+    function animateCount(start, end, duration = 1000) {
+      if (start === end) {
+        counterEl.textContent = end;
+        return;
+      }
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const current = Math.floor(progress * (end - start) + start);
+        counterEl.textContent = current;
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // Load previous count from localStorage or 0 for animation start
+    const previousCount = parseInt(localStorage.getItem("visitorCount")) || 0;
+
+    // Hit countapi and animate
+    fetch("https://api.countapi.xyz/hit/moviepirate-final/visits")
       .then(res => res.json())
-      .then(data => document.getElementById("counter").innerText = data.value)
-      .catch(() => document.getElementById("counter").innerText = "Error");
+      .then(data => {
+        const newCount = data.value || 0;
+        animateCount(previousCount, newCount, 1200);
+        localStorage.setItem("visitorCount", newCount);
+      })
+      .catch(() => {
+        counterEl.textContent = "Error";
+      });
+
+    // Last visited display
+    const lastVisitedEl = document.getElementById("lastVisited");
+    const lastVisit = localStorage.getItem("lastVisit");
+    if (lastVisit) {
+      const d = new Date(lastVisit);
+      lastVisitedEl.textContent = "Your Last Visit: " + d.toLocaleString();
+    } else {
+      lastVisitedEl.textContent = "Welcome! This is your first visit.";
+    }
+    // Save current visit time
+    localStorage.setItem("lastVisit", new Date().toISOString());
 
     // Back to Top
     const backToTopBtn = document.getElementById("backToTopBtn");
@@ -402,35 +499,25 @@
       }
     });
 
-    // Theme toggle
-    const themeBtn = document.getElementById("themeBtn");
-    function applyTheme(mode) {
-      if (mode === "light") {
-        document.body.classList.add("light");
-        themeBtn.textContent = "Switch Dark Mode";
-      } else {
-        document.body.classList.remove("light");
-        themeBtn.textContent = "Switch Light Mode";
+    // Theme selector logic
+    const themeSelector = document.getElementById("themeSelector");
+
+    function applyTheme(theme) {
+      document.body.classList.remove("light", "hacker-green", "neon-purple");
+      if (theme !== "dark") {
+        document.body.classList.add(theme);
       }
-      localStorage.setItem("theme", mode);
+      localStorage.setItem("theme", theme);
+      themeSelector.value = theme;
     }
-    themeBtn.addEventListener("click", () => {
-      if (document.body.classList.contains("light")) {
-        applyTheme("dark");
-      } else {
-        applyTheme("light");
-      }
+
+    themeSelector.addEventListener("change", (e) => {
+      applyTheme(e.target.value);
     });
 
-    // On load apply saved theme
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "light") {
-      applyTheme("light");
-    } else {
-      applyTheme("dark");
-    }
-
-    document.getElementById("lastUpdated").innerText = "Last Updated: " + new Date().toLocaleDateString();
+    // On load apply saved theme or default dark
+    const savedTheme = localStorage.getItem("theme") || "dark";
+    applyTheme(savedTheme);
   </script>
 </body>
 </html>
