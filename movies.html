@@ -1,495 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The MOVIE PIRATE</title>
-  <!-- Pirate skull favicon -->
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2438/2438081.png" type="image/png" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(to bottom, #0f0f0f, #1a1a1a);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-      transition: background 0.5s, color 0.5s;
-      position: relative;
-      min-height: 100vh;
-      overflow-x: hidden;
-      text-align: center;
-    }
-    body.light {
-      background: white;
-      color: #000;
-    }
-    body.light a {
-      color: #000;
-    }
-    body.light li {
-      background-color: #eee;
-      border-left-color: #0066ff;
-    }
-    body.light li:hover {
-      background: linear-gradient(to right, #00ccff, #0066ff);
-      color: #fff;
-      transform: scale(1.02);
-    }
-    body.light .theme-toggle {
-      background: #eee;
-      color: #0066ff;
-      border-color: #0066ff;
-    }
-    body.light #backToTopBtn {
-      background: #0066ff;
-      color: #fff;
-      box-shadow: 0 0 8px #0066ffcc;
-    }
-    body.light #backToTopBtn:hover {
-      background: #00ccff;
-      color: #000;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The MOVIE PIRATE</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2438/2438081.png" type="image/png" />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet" />
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Orbitron', sans-serif; background: linear-gradient(to bottom, #0f0f0f, #1a1a1a); color: #fff; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; transition: background 0.5s, color 0.5s; position: relative; min-height: 100vh; overflow-x: hidden; text-align: center; }
+body.light { background: #f0f0f0; color: #000; }
+body.light li { background-color: #ddd; border-left-color: #0066ff; }
+body.light li:hover { background: linear-gradient(to right, #00ccff, #0066ff); color: #fff; transform: scale(1.02); }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
-      background:
-        radial-gradient(2px 2px at 10% 20%, #00ccff88, transparent),
-        radial-gradient(1.5px 1.5px at 50% 50%, #00ffccaa, transparent),
-        radial-gradient(1.5px 1.5px at 80% 80%, #0066ffcc, transparent),
-        radial-gradient(2px 2px at 30% 80%, #00ccff88, transparent),
-        radial-gradient(1.5px 1.5px at 70% 30%, #00ffccaa, transparent);
-      background-repeat: repeat;
-      animation: starMove 60s linear infinite;
-      z-index: 0;
-    }
-    @keyframes starMove {
-      0% { background-position: 0 0; }
-      100% { background-position: 10000px 5000px; }
-    }
-    header {
-      background: linear-gradient(90deg, #00ffcc, #0066ff);
-      width: 100%;
-      text-align: center;
-      padding: 20px 0;
-      box-shadow: 0 0 10px #00ccff;
-      position: relative;
-      z-index: 1;
-    }
-    #animatedHeader {
-      font-size: 3em;
-      background: linear-gradient(90deg, #00ffcc, #0066ff, #00ffcc);
-      background-size: 200% 100%;
-      animation: slideGradient 3s linear infinite;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 0;
-      user-select: none;
-    }
-    @keyframes slideGradient {
-      0% { background-position: 0% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .theme-toggle {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      background: #000000aa;
-      color: #00ffcc;
-      border: 1px solid #00ffcc;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.3s, color 0.3s;
-    }
-    .theme-toggle:hover {
-      background: #00ccff;
-      color: #000;
-      border-color: #0066ff;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-      width: 100%;
-      max-width: 800px;
-      position: relative;
-      z-index: 1;
-    }
-    li {
-      margin: 12px 0;
-      background-color: #1a1a1a;
-      border-left: 4px solid #00ccff;
-      padding: 12px 16px;
-      border-radius: 6px;
-      transition: all 0.3s ease-in-out;
-      display: flex;
-      flex-direction: column;
-      cursor: pointer;
-      user-select: none;
-    }
-    li:hover {
-      background: linear-gradient(to right, #00ccff, #0066ff);
-      transform: scale(1.02);
-    }
-    .link-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    a {
-      color: #ffffff;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.1em;
-      word-break: break-word;
-      flex-grow: 1;
-      min-width: 150px;
-      pointer-events: none;
-    }
-    button.copy-btn {
-      background: #0066ffcc;
-      border: none;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s;
-      flex-shrink: 0;
-      min-width: 70px;
-      pointer-events: auto;
-    }
-    button.copy-btn:hover {
-      background: #00ccff;
-      color: #000;
-    }
-    .stars {
-      margin-top: 8px;
-      user-select: none;
-    }
-    .star {
-      font-size: 22px;
-      cursor: pointer;
-      color: #888;
-      transition: color 0.3s;
-      margin-right: 4px;
-    }
-    .star.selected {
-      color: gold;
-    }
-    .counter {
-      margin-top: 40px;
-      font-size: 20px;
-      color: #00ffcc;
-      user-select: none;
-    }
-    .last-updated {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #999;
-      user-select: none;
-    }
-    .loader {
-      width: 30px;
-      height: 30px;
-      border: 3px solid #00ccff;
-      border-top: 3px solid transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 20px auto;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    #backToTopBtn {
-      display: none;
-      position: fixed;
-      bottom: 40px;
-      right: 40px;
-      z-index: 100;
-      background: #00ccff;
-      border: none;
-      padding: 12px 16px;
-      border-radius: 50%;
-      cursor: pointer;
-      box-shadow: 0 0 8px #00ccffaa;
-      transition: background 0.3s;
-      font-size: 20px;
-      color: #000;
-      user-select: none;
-    }
-    #backToTopBtn:hover {
-      background: #0066ff;
-      color: #fff;
-    }
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.8em;
-      }
-      a {
-        font-size: 1em;
-        min-width: 100px;
-      }
-      button.copy-btn {
-        padding: 5px 8px;
-        font-size: 0.9em;
-        min-width: 60px;
-      }
-      .stars {
-        font-size: 18px;
-      }
-      #backToTopBtn {
-        bottom: 20px;
-        right: 20px;
-        padding: 10px 14px;
-        font-size: 18px;
-      }
-      .link-content {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-      }
-    }
-    @media (min-width: 1200px) {
-      body {
-        padding: 60px 80px;
-      }
-    }
-    /* Themes */
-    body.light {
-      background: white;
-      color: black;
-    }
-    body.hacker-green {
-      background: #0f0f0f;
-      color: #00ff00;
-    }
-    body.neon-purple {
-      background: #1a001a;
-      color: #cc00ff;
-    }
-    body.hacker-green li {
-      background-color: #002200;
-      border-left-color: #00ff00;
-    }
-    body.neon-purple li {
-      background-color: #330033;
-      border-left-color: #cc00ff;
-    }
-    body.hacker-green li:hover {
-      background: linear-gradient(to right, #00ff00, #007700);
-      color: #000;
-    }
-    body.neon-purple li:hover {
-      background: linear-gradient(to right, #cc00ff, #660066);
-      color: #fff;
-    }
-    body.hacker-green .theme-toggle,
-    body.neon-purple .theme-toggle {
-      background: transparent;
-      border-color: currentColor;
-    }
-  </style>
+body.hacker-green { background: #0f0f0f; color: #00ff00; }
+body.hacker-green li { background-color: #002200; border-left-color: #00ff00; }
+body.hacker-green li:hover { background: linear-gradient(to right, #00ff00, #007700); color: #000; }
+
+body.neon-purple { background: #1a001a; color: #cc00ff; }
+body.neon-purple li { background-color: #330033; border-left-color: #cc00ff; }
+body.neon-purple li:hover { background: linear-gradient(to right, #cc00ff, #660066); color: #fff; }
+
+body.sunny-yellow { background: #1f1a00; color: #ffcc00; }
+body.sunny-yellow li { background-color: #332900; border-left-color: #ffcc00; }
+body.sunny-yellow li:hover { background: linear-gradient(to right, #ffcc00, #996600); }
+
+body.pastel-pink { background: #2a001a; color: #ff66aa; }
+body.pastel-pink li { background-color: #4d0033; border-left-color: #ff66aa; }
+body.pastel-pink li:hover { background: linear-gradient(to right, #ff66aa, #990066); }
+
+body.mint-green { background: #001a1a; color: #00cc66; }
+body.mint-green li { background-color: #00332e; border-left-color: #00cc66; }
+body.mint-green li:hover { background: linear-gradient(to right, #00cc66, #006633); }
+
+body.sky-blue { background: #001a2a; color: #0099cc; }
+body.sky-blue li { background-color: #00334d; border-left-color: #0099cc; }
+body.sky-blue li:hover { background: linear-gradient(to right, #0099cc, #006699); }
+
+body.rainbow { background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); background-size: 400% 400%; animation: rainbowBG 10s linear infinite; color: white; }
+body.rainbow li { background-color: rgba(255,255,255,0.1); border-left-color: #fff; }
+body.rainbow li:hover { background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet); color: #fff; }
+
+@keyframes rainbowBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; background: radial-gradient(2px 2px at 10% 20%, #00ccff88, transparent), radial-gradient(1.5px 1.5px at 50% 50%, #00ffccaa, transparent), radial-gradient(1.5px 1.5px at 80% 80%, #0066ffcc, transparent), radial-gradient(2px 2px at 30% 80%, #00ccff88, transparent), radial-gradient(1.5px 1.5px at 70% 30%, #00ffccaa, transparent); background-repeat: repeat; animation: starMove 60s linear infinite; z-index: 0; }
+@keyframes starMove { 0% { background-position: 0 0; } 100% { background-position: 10000px 5000px; } }
+
+header { background: linear-gradient(90deg, #00ffcc, #0066ff); width: 100%; text-align: center; padding: 20px 0; box-shadow: 0 0 10px #00ccff; position: relative; z-index: 1; }
+#animatedHeader { font-size: 3em; background: linear-gradient(90deg, #00ffcc, #0066ff, #00ffcc); background-size: 200% 100%; animation: slideGradient 3s linear infinite; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; user-select: none; }
+@keyframes slideGradient { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+
+.theme-toggle { position: absolute; top: 10px; right: 20px; background: #000000aa; color: #00ffcc; border: 1px solid #00ffcc; padding: 6px 12px; border-radius: 4px; cursor: pointer; z-index: 2; transition: background 0.3s, color 0.3s; }
+.theme-toggle:hover { background: #00ccff; color: #000; border-color: #0066ff; }
+
+.warning { color: red; font-size: 0.9em; margin-bottom: 10px; }
+
+ul { list-style: none; padding: 0; width: 100%; max-width: 800px; position: relative; z-index: 1; }
+li { margin: 12px 0; background-color: #1a1a1a; border-left: 4px solid #00ccff; padding: 12px 16px; border-radius: 6px; transition: all 0.5s ease; display: flex; flex-direction: column; cursor: pointer; user-select: none; position: relative; }
+li:hover { transform: scale(1.02); }
+
+.link-content { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
+a { color: #ffffff !important; text-decoration: none; font-weight: bold; font-size: 1.1em; flex-grow: 1; min-width: 150px; text-align: center; pointer-events: none; }
+button.copy-btn { background: #0066ffcc; border: none; color: white; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-weight: 600; transition: background 0.3s; flex-shrink: 0; min-width: 70px; pointer-events: auto; }
+button.copy-btn:hover { background: #00ccff; color: #000; }
+
+.stars { margin-top: 8px; user-select: none; display: flex; justify-content: center; align-items: center; gap: 4px; }
+.star { font-size: 22px; cursor: pointer; color: #888; transition: color 0.3s, transform 0.2s; }
+.star:hover { transform: scale(1.5); color: gold; }
+.star.selected { color: gold; transform: scale(1.2); }
+
+.remove-stars-btn { margin-top: 4px; padding: 6px 0; font-size: 0.8em; background: red; color: #fff; border: none; border-radius: 4px; cursor: pointer; width: 120px; align-self: center; }
+.remove-stars-btn:hover { background: darkred; }
+
+.counter { margin-top: 40px; font-size: 20px; color: #00ffcc; user-select: none; }
+.last-updated { margin-top: 10px; font-size: 14px; color: #999; user-select: none; }
+
+#backToTopBtn { display: none; position: fixed; bottom: 40px; right: 40px; z-index: 100; background: #00ccff; border: none; padding: 12px 16px; border-radius: 50%; cursor: pointer; box-shadow: 0 0 8px #00ccffaa; transition: background 0.3s; font-size: 20px; color: #000; user-select: none; }
+#backToTopBtn:hover { background: #0066ff; color: #fff; }
+</style>
 </head>
 <body>
-  <header>
-    <h1 id="animatedHeader">MOVIE PIRATE</h1>
-    <select class="theme-toggle" id="themeSelector" title="Choose Theme">
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-      <option value="hacker-green">Hacker Green</option>
-      <option value="neon-purple">Neon Purple</option>
-    </select>
-  </header>
+<header>
+<h1 id="animatedHeader">MOVIE PIRATE</h1>
+<select class="theme-toggle" id="themeSelector" title="Choose Theme">
+<option value="dark">Dark</option>
+<option value="light">Light</option>
+<option value="hacker-green">Hacker Green</option>
+<option value="neon-purple">Neon Purple</option>
+<option value="sunny-yellow">Sunny Yellow</option>
+<option value="pastel-pink">Pastel Pink</option>
+<option value="mint-green">Mint Green</option>
+<option value="sky-blue">Sky Blue</option>
+<option value="rainbow">Rainbow</option>
+</select>
+</header>
 
-  <ul id="linksList"></ul>
+<div class="warning">⚠ It's better to use an adblocker when visiting the links!</div>
 
-  <div class="counter">Visitor Count: <span id="counter"><div class="loader"></div></span></div>
-  <div class="last-updated" id="lastUpdated"></div>
+<ul id="linksList"></ul>
 
-  <button id="backToTopBtn" title="Back to top">↑</button>
+<div class="counter">Visitor Count: <span id="counter"><div class="loader"></div></span></div>
+<div class="last-updated" id="lastUpdated"></div>
+<button id="backToTopBtn" title="Back to top">↑</button>
 
-  <script>
-    const links = [
-      { name: "Xprime", url: "https://xprime.tv/" },
-      { name: "Soap2day", url: "https://ww25.soap2day.day/soap2day-fk9js/" },
-      { name: "Hdtodayz", url: "https://hdtodayz.to/home" },
-      { name: "Myflixerz", url: "https://myflixerz.to/home" },
-      { name: "Egydead", url: "http://tv1.egydead.live/home/" },
-      { name: "Fmovies", url: "https://www.fmovies.gd/home" },
-      { name: "Veloratv", url: "https://veloratv.ru/" },
-      { name: "345movie", url: "https://345movie.net/home" },
-      { name: "Cencerdevs", url: "https://watch.spencerdevs.xyz/" },
-      { name: "Cineby", url: "https://www.cineby.app/" },
-      { name: "Rivestream", url: "https://rivestream.org/" },
-      { name: "Corsflix", url: "https://watch.corsflix.net/" },
-      { name: "Flickystream", url: "https://flickystream.net/" },
-      { name: "Rgshows", url: "https://www.rgshows.me/" },
-      { name: "Netplayz", url: "https://netplayz.live/" },
-      { name: "Popcornmovies", url: "https://popcornmovies.org/home" },
-      { name: "Vidjoy", url: "https://vidjoy.pro/" },
-      { name: "Smashystream", url: "https://smashystream.xyz/" },
-      { name: "Streamm4u", url: "https://streamm4u.com.co/home" },
-      { name: "Cinego", url: "https://cinego.co/home/" },
-      { name: "Bflix", url: "https://bflix.sh/home/" },
-      { name: "M-zone", url: "https://www.m-zone.org/" }
-    ];
+<script>
+const links = [
+  { name: "Xprime", url: "https://xprime.tv/" },
+  { name: "Soap2day", url: "https://ww25.soap2day.day/soap2day-fk9js/" },
+  { name: "Hdtodayz", url: "https://hdtodayz.to/home" },
+  { name: "Myflixerz", url: "https://myflixerz.to/home" },
+  { name: "Egydead", url: "http://tv1.egydead.live/home/" },
+  { name: "Fmovies", url: "https://www.fmovies.gd/home" },
+  { name: "Veloratv", url: "https://veloratv.ru/" },
+  { name: "345movie", url: "https://345movie.net/home" },
+  { name: "Cencerdevs", url: "https://watch.spencerdevs.xyz/" },
+  { name: "Cineby", url: "https://www.cineby.app/" },
+  { name: "Rivestream", url: "https://rivestream.org/" },
+  { name: "Corsflix", url: "https://watch.corsflix.net/" },
+  { name: "Flickystream", url: "https://flickystream.net/" },
+  { name: "Rgshows", url: "https://www.rgshows.me/" },
+  { name: "Netplayz", url: "https://netplayz.live/" },
+  { name: "Popcornmovies", url: "https://popcornmovies.org/home" },
+  { name: "Vidjoy", url: "https://vidjoy.pro/" },
+  { name: "Smashystream", url: "https://smashystream.xyz/" },
+  { name: "Streamm4u", url: "https://streamm4u.com.co/home" },
+  { name: "Cinego", url: "https://cinego.co/home/" },
+  { name: "Bflix", url: "https://bflix.sh/home/" },
+  { name: "M-zone", url: "https://www.m-zone.org/" }
+];
 
-    const list = document.getElementById("linksList");
+const list = document.getElementById("linksList");
 
-    function createListItems() {
-      list.innerHTML = "";
-      links.sort((a, b) => {
-        const aRank = parseInt(localStorage.getItem("rank-" + a.name)) || 0;
-        const bRank = parseInt(localStorage.getItem("rank-" + b.name)) || 0;
-        return bRank - aRank;
-      });
-      links.forEach((link) => {
-        const li = document.createElement("li");
-        li.addEventListener("click", (e) => {
-          if (!e.target.classList.contains("copy-btn") && !e.target.classList.contains("star")) {
-            window.open(link.url, "_blank");
-          }
-        });
+function createListItems() {
+  list.innerHTML = "";
+  links.sort((a,b)=>{
+    const aRank = parseInt(localStorage.getItem("rank-"+a.name))||0;
+    const bRank = parseInt(localStorage.getItem("rank-"+b.name))||0;
+    return bRank - aRank;
+  });
+  links.forEach(link=>{
+    const li=document.createElement("li");
+    li.addEventListener("click",(e)=>{
+      if(!e.target.classList.contains("copy-btn")&&!e.target.classList.contains("star")&&!e.target.classList.contains("remove-stars-btn")){
+        window.open(link.url,"_blank");
+      }
+    });
 
-        const row = document.createElement("div");
-        row.className = "link-content";
+    const row=document.createElement("div");
+    row.className="link-content";
 
-        const a = document.createElement("a");
-        a.href = link.url;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.textContent = link.name;
+    const a=document.createElement("a");
+    a.href=link.url;
+    a.target="_blank";
+    a.rel="noopener noreferrer";
+    a.textContent=link.name;
 
-        const btn = document.createElement("button");
-        btn.className = "copy-btn";
-        btn.textContent = "Copy";
-        btn.dataset.url = link.url;
+    const btn=document.createElement("button");
+    btn.className="copy-btn";
+    btn.textContent="Copy";
+    btn.dataset.url=link.url;
 
-        row.appendChild(a);
-        row.appendChild(btn);
+    row.appendChild(a);
+    row.appendChild(btn);
 
-        const stars = document.createElement("div");
-        stars.className = "stars";
+    const stars=document.createElement("div");
+    stars.className="stars";
 
-        for (let s = 1; s <= 5; s++) {
-          const star = document.createElement("span");
-          star.className = "star";
-          star.innerHTML = "★";
-          star.dataset.name = link.name;
-          star.dataset.star = s;
-          star.onclick = (ev) => {
-            ev.stopPropagation();
-            localStorage.setItem("rank-" + link.name, s);
-            createListItems();
-          };
-          stars.appendChild(star);
-        }
-
-        li.appendChild(row);
-        li.appendChild(stars);
-        list.appendChild(li);
-      });
-
-      renderStars();
-    }
-
-    function renderStars() {
-      document.querySelectorAll(".star").forEach(star => {
-        const name = star.dataset.name;
-        const value = parseInt(localStorage.getItem("rank-" + name) || "0");
-        star.classList.toggle("selected", parseInt(star.dataset.star) <= value);
-      });
-    }
-
-    createListItems();
-
-    // Visitor Counter with animation
-    const counterEl = document.getElementById("counter");
-
-    function animateCount(start, end, duration) {
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        counterEl.textContent = Math.floor(progress * (end - start) + start);
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        }
+    for(let i=1;i<=5;i++){
+      const star=document.createElement("span");
+      star.className="star";
+      star.innerHTML="★";
+      star.dataset.name=link.name;
+      star.dataset.star=i;
+      star.onclick=(ev)=>{
+        ev.stopPropagation();
+        localStorage.setItem("rank-"+link.name,i);
+        createListItems();
+        li.scrollIntoView({behavior:"smooth", block:"start"});
       };
-      window.requestAnimationFrame(step);
+      stars.appendChild(star);
     }
 
-    // Use CountAPI hit endpoint
-    fetch("https://api.countapi.xyz/hit/moviepirate-final/visits")
-      .then(res => res.json())
-      .then(data => {
-        const prevCount = parseInt(localStorage.getItem("visitorCount")) || 0;
-        const newCount = data.value;
-        localStorage.setItem("visitorCount", newCount);
-        animateCount(prevCount, newCount, 1000);
-      })
-      .catch(() => {
-        counterEl.textContent = "Error";
-      });
-
-    // Back to Top
-    const backToTopBtn = document.getElementById("backToTopBtn");
-    window.onscroll = () => {
-      backToTopBtn.style.display = (window.scrollY > 300) ? "block" : "none";
-    };
-    backToTopBtn.onclick = () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    const removeStarsBtn=document.createElement("button");
+    removeStarsBtn.className="remove-stars-btn";
+    removeStarsBtn.textContent="Remove Stars";
+    removeStarsBtn.onclick=(ev)=>{
+      ev.stopPropagation();
+      localStorage.setItem("rank-"+link.name,0);
+      createListItems();
     };
 
-    // Copy buttons
-    document.addEventListener("click", e => {
-      if (e.target.classList.contains("copy-btn")) {
-        const url = e.target.dataset.url;
-        navigator.clipboard.writeText(url).then(() => {
-          e.target.textContent = "Copied!";
-          setTimeout(() => e.target.textContent = "Copy", 1500);
-        }).catch(() => {
-          e.target.textContent = "Failed";
-          setTimeout(() => e.target.textContent = "Copy", 1500);
-        });
-      }
-    });
+    li.appendChild(row);
+    li.appendChild(stars);
+    li.appendChild(removeStarsBtn);
 
-    // Theme selector logic
-    const themeSelector = document.getElementById("themeSelector");
+    list.appendChild(li);
+  });
+}
 
-    function applyTheme(theme) {
-      document.body.classList.remove("light", "hacker-green", "neon-purple");
-      if (theme !== "dark") {
-        document.body.classList.add(theme);
-      }
-      localStorage.setItem("theme", theme);
-      themeSelector.value = theme;
-    }
+createListItems();
 
-    themeSelector.addEventListener("change", (e) => {
-      applyTheme(e.target.value);
-    });
+document.getElementById("themeSelector").addEventListener("change",(e)=>{
+  document.body.className=e.target.value;
+  localStorage.setItem("theme",e.target.value);
+});
+const savedTheme=localStorage.getItem("theme")||"dark";
+document.body.className=savedTheme;
+document.getElementById("themeSelector").value=savedTheme;
 
-    // On load apply saved theme or default dark
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    applyTheme(savedTheme);
+document.getElementById("backToTopBtn").addEventListener("click",()=>{window.scrollTo({top:0,behavior:"smooth"});});
+window.addEventListener("scroll",()=>{document.getElementById("backToTopBtn").style.display=window.scrollY>300?"block":"none";});
 
-    document.getElementById("lastUpdated").innerText = "Last Updated: " + new Date().toLocaleDateString();
-  </script>
+// Copy button
+document.addEventListener("click",e=>{
+  if(e.target.classList.contains("copy-btn")){
+    navigator.clipboard.writeText(e.target.dataset.url);
+    e.target.textContent="Copied!";
+    setTimeout(()=>{e.target.textContent="Copy";},1000);
+  }
+});
+</script>
 </body>
 </html>
-
