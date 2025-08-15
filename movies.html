@@ -253,6 +253,22 @@ document.getElementById("counter").textContent=counter;
 
 // Last updated
 document.getElementById("lastUpdated").textContent="Last Updated: "+new Date().toLocaleString();
+  // Adblock warning
+const adWarning = document.createElement("div");
+adWarning.textContent = "⚠ It's better if you use an adblock";
+adWarning.style.backgroundColor = "red";
+adWarning.style.color = "white";
+adWarning.style.fontWeight = "bold";
+adWarning.style.padding = "10px";
+adWarning.style.borderRadius = "6px";
+adWarning.style.margin = "12px auto";
+adWarning.style.maxWidth = "800px";
+adWarning.style.textAlign = "center";
+adWarning.style.fontSize = "1em";
+adWarning.style.zIndex = "2";
+document.body.insertBefore(adWarning, document.getElementById("linksList"));
+
 </script>
 </body>
 </html>
+
